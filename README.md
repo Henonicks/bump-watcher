@@ -1,4 +1,4 @@
-# C++ Discord bot made with [D++](https://dpp.dev), Bump Watcher 
+# Bump Watcher, a C++ Discord bot made with [D++](https://dpp.dev).
 
 This bot watches when someone bumps a guild (Disboard bump) and gives them a dedicated role. Then, removes it in 2 hours.
 
@@ -17,13 +17,10 @@ cmake -B build -DDPP_ROOT_DIR=<your-path>
 
 ## Running the bot
 
-Create a config.json in the directory above the build directory:
+Edit config.json and replace `TOKEN HERE` with your bot's token!
 
 ```json
-{
-    "BOT_TOKEN" : "your bot token here",
-    "BUMPER_ROLE_ID" : "ID of the role to be given" 
-}
+{"BOT_TOKEN":"TOKEN HERE"}
 ```
 
 Start the bot:
