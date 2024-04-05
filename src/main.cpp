@@ -14,7 +14,7 @@ int main() {
 	bot.on_log(dpp::utility::cout_logger());
 
 	bot.on_slashcommand([](const dpp::slashcommand_t& event) {
-		if(event.command.get_command_name() == "set_role") {
+		if (event.command.get_command_name() == "set_role") {
 			auto role = std::get<dpp::snowflake>(event.get_parameter("role"));
 
 			if (!role) {
@@ -84,7 +84,7 @@ int main() {
 	});
 
 	bot.on_ready([&bot](const dpp::ready_t& event) {
-		if(dpp::run_once<struct setup_commands>()) {
+		if (dpp::run_once<struct setup_commands>()) {
 			dpp::slashcommand setrole_command("set_role", "Set the role that Bump Watcher should add to the the most recent bumper!", bot.me.id);
 			setrole_command.add_option(
 				dpp::command_option(dpp::co_role, "role", "The role that the bot should add for the most recent bumper!", true)
