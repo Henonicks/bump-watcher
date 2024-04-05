@@ -9,7 +9,7 @@ int main() {
 	config_file >> config_document;
 
 	/* Create bot */
-	dpp::cluster bot(config_document["BOT_TOKEN"], dpp::i_message_content | dpp::i_default_intents);
+	dpp::cluster bot(config_document["BOT_TOKEN"], dpp::i_message_content | dpp::i_default_intents, 0, 0, 1, true, dpp::cache_policy::cpol_none);
 
 	bot.on_log(dpp::utility::cout_logger());
 
