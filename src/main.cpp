@@ -68,7 +68,7 @@ int main() {
 				.set_colour(dpp::colours::aqua)
 				.add_field("Bot Uptime", bot.uptime().to_string(), true)
 				.add_field("Memory Usage", std::to_string(rss() / 1024 / 1024) + "M", true)
-				.add_field("Role ID:", role_id ? std::to_string(role_id) : "Not set!", true);
+				.add_field("Role ID:", !role_id.empty() ? role_id.str() : "Not set!", true);
 
 			event.reply(dpp::message().add_embed(embed));
 		}
