@@ -3,6 +3,26 @@
 using json = nlohmann::json;
 constexpr uint64_t DISBOARD_ID = 302050872383242240;
 
+// This will only return a value on Linux.
+int64_t proc_self_value(const std::string& find_token) {
+	int64_t ret = 0;
+	std::ifstream self_status("/proc/self/status");
+	while (self_status) {
+		std::string token;
+		self_status >> token;
+		if (token == find_token) {
+			self_status >> ret;
+			break;
+		}
+	}
+	self_status.close();
+	return ret;
+}
+
+int64_t rss() {
+	return proc_self_value("VmRSS:") * 1024;
+}
+
 int main() {
 	json config_document;
 	std::ifstream config_file("../config.json");
@@ -13,7 +33,7 @@ int main() {
 
 	bot.on_log(dpp::utility::cout_logger());
 
-	bot.on_slashcommand([](const dpp::slashcommand_t& event) {
+	bot.on_slashcommand([&bot](const dpp::slashcommand_t& event) {
 		if (event.command.get_command_name() == "set_role") {
 			auto role = std::get<dpp::snowflake>(event.get_parameter("role"));
 
@@ -29,6 +49,29 @@ int main() {
 			guild_config.close();
 
 			event.reply(dpp::message("Updated the role!").set_flags(dpp::m_ephemeral));
+		} else if (event.command.get_command_name() == "info") {
+			std::ifstream guild_config("../" + event.command.guild_id.str() + ".json");
+			dpp::snowflake role_id{};
+
+			if (guild_config.good()) {
+				json j;
+				guild_config >> j;
+				role_id = j["ROLE_ID"];
+			}
+
+			dpp::embed embed = dpp::embed()
+				.set_title("Bump Watcher - Information")
+				.set_footer(dpp::embed_footer{
+					.text = "Requested by " + event.command.usr.format_username(),
+					.icon_url = event.command.usr.get_avatar_url(),
+					.proxy_url = "",
+				})
+				.set_colour(dpp::colours::aqua)
+				.add_field("Bot Uptime", bot.uptime().to_string(), true)
+				.add_field("Memory Usage", std::to_string(rss() / 1024 / 1024) + "M", true)
+				.add_field("Role ID:", role_id ? std::to_string(role_id) : "Not set!", true);
+
+			event.reply(dpp::message().add_embed(embed));
 		}
 	});
 
@@ -90,7 +133,9 @@ int main() {
 				dpp::command_option(dpp::co_role, "role", "The role that the bot should add for the most recent bumper!", true)
 			);
 
-			bot.global_bulk_command_create({ setrole_command });
+			dpp::slashcommand info_command("info", "Get information about the bot!", bot.me.id);
+
+			bot.global_bulk_command_create({ setrole_command, info_command });
 		}
 
 		if (dpp::run_once<struct presence_timer>()) {
