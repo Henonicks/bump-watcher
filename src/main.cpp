@@ -6,7 +6,7 @@ constexpr uint64_t DISBOARD_ID{302050872383242240};
 // This will only return a value on Linux.
 int64_t proc_self_value(const std::string_view find_token) {
 	int64_t ret{0};
-	std::ifstream self_status("/proc/self/status");
+	std::ifstream self_status{"/proc/self/status"};
 	while (self_status) {
 		std::string token;
 		self_status >> token;
