@@ -1,0 +1,4 @@
+{
+  "BOT_TOKEN" : "your bot token here",
+  "BUMPER_ROLE_ID" : "ID of the role to be given"
+}

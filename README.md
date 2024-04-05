@@ -4,14 +4,16 @@ This bot watches when someone bumps a guild (Disboard bump) and gives them a ded
 
 ## Compilation
 
-    mkdir build
-    cd build
-    cmake ..
-    make -j
+```bash
+cmake -B build
+cmake --build build -j 4
+```
 
 If DPP is installed in a different location you can specify the root directory to look in while running cmake 
 
-    cmake .. -DDPP_ROOT_DIR=<your-path>
+```bash
+cmake -B build -DDPP_ROOT_DIR=<your-path>
+```
 
 ## Running the bot
 
@@ -25,14 +27,7 @@ Create a config.json in the directory above the build directory:
 ```
 
 Start the bot:
-
-    cd build
-    ./templatebot
-
-## Extending the bot
-
-You can add as many header files and .cpp files into the src and include folders as you wish. All .cpp files in the src directory will be linked together into the bot's executable.
-
-## Renaming the bot
-
-To rename the bot, search and replace "bumpwatcher" in the `CMakeLists.txt` with your new bots name and then rename the bumpwatcher folder in include. Rerun `cmake ..` from the `build` directory and rebuild. You might need to re-create the `build` directory.
+```bash
+cd build
+./templatebot
+```
