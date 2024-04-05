@@ -55,6 +55,17 @@ int main() {
 		});
 	});
 
+	bot.on_ready([&bot](const dpp::ready_t& event) {
+		if(dpp::run_once<struct presence_timer>()) {
+			bot.start_timer([&bot](const dpp::timer& timer) {
+				bot.current_application_get([&bot](const dpp::confirmation_callback_t& callback) {
+					auto app = callback.get<dpp::application>();
+					bot.set_presence(dpp::presence(dpp::ps_online, dpp::at_watching, "DISBOARD on " + std::to_string(app.approximate_guild_count) + " servers!"));
+				});
+			}, 120);
+		}
+	});
+
 	bot.start(dpp::st_wait);
 	return 0;
 }
