@@ -17,7 +17,7 @@ int main() {
 		if(event.command.get_command_name() == "set_role") {
 			auto role = std::get<dpp::snowflake>(event.get_parameter("role"));
 
-			if(!role) {
+			if (!role) {
 				event.reply(dpp::message("You didn't specify a role!").set_flags(dpp::m_ephemeral));
 				return;
 			}
@@ -35,7 +35,7 @@ int main() {
 	/* When a message has been sent */
 	bot.on_message_create([&bot](const dpp::message_create_t& event) {
 		/* Is the author the DISBOARD bot? */
-		if(event.msg.author.id != DISBOARD_ID) {
+		if (event.msg.author.id != DISBOARD_ID) {
 			return;
 		}
 
@@ -51,7 +51,7 @@ int main() {
 
 		std::ifstream guild_config("../" + event.msg.guild_id.str() + ".json");
 
-		if(guild_config.bad()) {
+		if (guild_config.bad()) {
 			event.reply("Could not give a role based off this message as the role has not been setup! Please use `/set_role`.");
 			return;
 		}
@@ -93,7 +93,7 @@ int main() {
 			bot.global_bulk_command_create({ setrole_command });
 		}
 
-		if(dpp::run_once<struct presence_timer>()) {
+		if (dpp::run_once<struct presence_timer>()) {
 			bot.current_application_get([&bot](const dpp::confirmation_callback_t& callback) {
 				auto app = callback.get<dpp::application>();
 				bot.set_presence(dpp::presence(dpp::ps_online, dpp::at_watching, "DISBOARD on " + std::to_string(app.approximate_guild_count) + " servers!"));
