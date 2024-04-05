@@ -37,7 +37,7 @@ int main() {
 		if (event.command.get_command_name() == "set_role") {
 			auto role = std::get<dpp::snowflake>(event.get_parameter("role"));
 
-			if (!role) {
+			if (role.empty()) {
 				event.reply(dpp::message("You didn't specify a role!").set_flags(dpp::m_ephemeral));
 				return;
 			}
@@ -63,8 +63,7 @@ int main() {
 				.set_title("Bump Watcher - Information")
 				.set_footer(dpp::embed_footer{
 					.text = "Requested by " + event.command.usr.format_username(),
-					.icon_url = event.command.usr.get_avatar_url(),
-					.proxy_url = "",
+					.icon_url = event.command.usr.get_avatar_url()
 				})
 				.set_colour(dpp::colours::aqua)
 				.add_field("Bot Uptime", bot.uptime().to_string(), true)
