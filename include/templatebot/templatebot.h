@@ -3,4 +3,6 @@
 #include <dpp/dpp.h>
 #include <dpp/nlohmann/json.hpp>
 
+#include "henifig/henifig.hpp"
+
 // Place any forward declarations here

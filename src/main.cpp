@@ -24,15 +24,14 @@ int64_t rss() {
 }
 
 int main() {
-	json config_document;
-	std::ifstream config_file{"../config.json"};
-	config_file >> config_document;
+	henifig::config_t config("../config.hfg");
 
 	/* Create bot */
-	dpp::cluster bot{config_document["BOT_TOKEN"], dpp::i_message_content | dpp::i_default_intents, 0, 0, 1, true, dpp::cache_policy::cpol_none};
+	dpp::cluster bot{config["BOT_TOKEN"], dpp::i_message_content | dpp::i_default_intents, 0, 0, 1, true, dpp::cache_policy::cpol_none};
 
 	bot.on_log(dpp::utility::cout_logger());
 
+	using nlohmann::json;
 	bot.on_slashcommand([&bot](const dpp::slashcommand_t& event) {
 		if (event.command.get_command_name() == "set_role") {
 			auto role{std::get<dpp::snowflake>(event.get_parameter("role"))};

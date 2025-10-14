@@ -19,6 +19,8 @@ set_target_properties(${BOT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
 )
 
+add_subdirectory(Henifig)
+
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(DPP)
@@ -43,6 +45,7 @@ target_link_libraries(${BOT_NAME}
         ${CMAKE_THREAD_LIBS_INIT}
         ${OPENSSL_CRYPTO_LIBRARY}
         ${OPENSSL_SSL_LIBRARY}
+	henifig
 )
 
 if (DPP_FOUND)
