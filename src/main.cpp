@@ -58,6 +58,10 @@ int main() {
 				role_id = j["ROLE_ID"];
 			}
 
+			const std::string uptime = std::to_string(bot.uptime().days)  + 'd' +
+			                     ' ' + std::to_string(bot.uptime().hours) + 'h' +
+			                     ' ' + std::to_string(bot.uptime().mins)  + 'm' +
+			                     ' ' + std::to_string(bot.uptime().secs)  + 's';
 			dpp::embed embed = dpp::embed()
 				.set_title("Bump Watcher - Information")
 				.set_footer(dpp::embed_footer{
@@ -65,7 +69,7 @@ int main() {
 					.icon_url = event.command.usr.get_avatar_url()
 				})
 				.set_colour(dpp::colours::aqua)
-				.add_field("Bot Uptime", bot.uptime().to_string(), true)
+				.add_field("Bot Uptime", uptime, true)
 				.add_field("Memory Usage", std::to_string(rss() / 1024 / 1024) + "M", true)
 				.add_field("Role ID:", !role_id.empty() ? role_id.str() : "Not set!", true);
 
